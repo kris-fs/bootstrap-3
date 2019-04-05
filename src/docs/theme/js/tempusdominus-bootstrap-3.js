@@ -1,6 +1,6 @@
 /*@preserve
  * Tempus Dominus Bootstrap3 v5.0.0-alpha10 (https://tempusdominus.github.io/bootstrap-3/)
- * Copyright 2016-2018 Jonathan Peterson
+ * Copyright 2016-2019 Jonathan Peterson
  * Licensed under MIT (https://github.com/tempusdominus/bootstrap-3/blob/master/LICENSE)
  */
 
@@ -1663,10 +1663,15 @@ var TempusDominusBootstrap3 = function ($) {
         };
 
         TempusDominusBootstrap3.prototype._getTimePickerMainTemplate = function _getTimePickerMainTemplate() {
-            var topRow = $('<tr>'),
+            var tableHead = $('<thead><tr class="spacer"></tr><tr><th>Time</th></tr></thead>'),
+                tableBody = $('<tbody>'),
+                topRow = $('<tr>'),
                 middleRow = $('<tr>'),
                 bottomRow = $('<tr>');
-
+            if (!this._options.buttons.showIncrementDecrement) {
+                topRow.attr('hidden', true);
+                bottomRow.attr('hidden', true);
+            }
             if (this._isEnabled('h')) {
                 topRow.append($('<td>').append($('<a>').attr({
                     href: '#',
@@ -1736,7 +1741,7 @@ var TempusDominusBootstrap3 = function ($) {
                 bottomRow.append($('<td>').addClass('separator'));
             }
 
-            return $('<div>').addClass('timepicker-picker').append($('<table>').addClass('table-condensed').append([topRow, middleRow, bottomRow]));
+            return $('<div>').addClass('timepicker-picker').append($('<table>').addClass('table-condensed').append(tableHead).append(tableBody).append([topRow, middleRow, bottomRow]));
         };
 
         TempusDominusBootstrap3.prototype._getTimePickerTemplate = function _getTimePickerTemplate() {
@@ -2399,15 +2404,18 @@ var TempusDominusBootstrap3 = function ($) {
                     this.widget.find('.timepicker .timepicker-picker').show();
                     break;
                 case 'showHours':
-                    this.widget.find('.timepicker .timepicker-picker').hide();
+                    this.widget.find('.timepicker .timepicker-minutes').hide();
+                    this.widget.find('.timepicker .timepicker-seconds').hide();
                     this.widget.find('.timepicker .timepicker-hours').show();
                     break;
                 case 'showMinutes':
-                    this.widget.find('.timepicker .timepicker-picker').hide();
+                    this.widget.find('.timepicker .timepicker-hours').hide();
+                    this.widget.find('.timepicker .timepicker-seconds').hide();
                     this.widget.find('.timepicker .timepicker-minutes').show();
                     break;
                 case 'showSeconds':
-                    this.widget.find('.timepicker .timepicker-picker').hide();
+                    this.widget.find('.timepicker .timepicker-hours').hide();
+                    this.widget.find('.timepicker .timepicker-minutes').hide();
                     this.widget.find('.timepicker .timepicker-seconds').show();
                     break;
                 case 'selectHour':
